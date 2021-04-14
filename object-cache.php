@@ -4,7 +4,8 @@ Plugin Name: Memcached Redux
 Description: The real Memcached (not Memcache) backend for the WP Object Cache.
 Version: 0.1.7
 Plugin URI: http://wordpress.org/extend/plugins/memcached-redux/
-Author: Scott Taylor - uses code from Ryan Boren, Denis de Bernardy, Matt Martz, Mike Schroder, Mika Epstein, Mohammad Jangda
+Author: Scott Taylor - uses code from Ryan Boren, Denis de Bernardy, Matt Martz, Mike Schroder, Mika Epstein,
+        Mohammad Jangda, Maciej Klepaczewski
 
 Install this file to wp-content/object-cache.php
 */
@@ -205,9 +206,12 @@ class WP_Object_Cache {
 
 		if ( false !== $result ) {
 			++$this->stats['delete'];
-			$this->group_ops[$group][] = "delete $id";
-			unset( $this->cache[$key] );
+            $this->group_ops[$group][] = "delete $id";
 		}
+
+		/* Always flush in-memory cache */
+        $this->group_ops[$group][] = "delete in-memory $id";
+        unset( $this->cache[$key] );
 
 		return $result;
 	}
