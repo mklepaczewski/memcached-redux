@@ -1,9 +1,9 @@
 === Memcached Redux ===
-Contributors: wonderboymusic, ryan, sivel, DH-Shredder, Ipstenu
+Contributors: wonderboymusic, ryan, sivel, mikeschroder, Ipstenu, batmoo
 Tags: cache, Memcached, admin, manage cache, object cache, WP Object Cache
 Requires at least: 3.0
-Tested up to: 4.9
-Stable Tag: 0.1.6
+Tested up to: 5.4.1
+Stable Tag: 0.1.7
 
 Uses the Memcached class (not the Memcache class) to implement WP Object Cache
 
@@ -35,6 +35,10 @@ Blog Post: [http://scotty-t.com/2012/06/05/memcached-redux/](http://scotty-t.com
 1. Copy object-cache.php to wp-content
 
 == Changelog ==
+
+= 0.1.7 =
+* Improved escaping in debug output ported from [Memcached plugin](https://wordpress.org/plugins/memcached/) (props @batmoo).
+* Fixed PHP notice when no Memcached server:port manually specified.
 
 = 0.1.6 =
 * Corrected documentation

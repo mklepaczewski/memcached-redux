@@ -2,9 +2,9 @@
 /*
 Plugin Name: Memcached Redux
 Description: The real Memcached (not Memcache) backend for the WP Object Cache.
-Version: 0.1.6
+Version: 0.1.7
 Plugin URI: http://wordpress.org/extend/plugins/memcached-redux/
-Author: Scott Taylor - uses code from Ryan Boren, Denis de Bernardy, Matt Martz, Mike Schroder, Mika Epstein
+Author: Scott Taylor - uses code from Ryan Boren, Denis de Bernardy, Matt Martz, Mike Schroder, Mika Epstein, Mohammad Jangda
 
 Install this file to wp-content/object-cache.php
 */
@@ -387,15 +387,15 @@ class WP_Object_Cache {
 
 		$cmd = substr( $line, 0, strpos( $line, ' ' ) );
 
-		$cmd2 = "<span style='color:{$colors[$cmd]}'>$cmd</span>";
+		$cmd2 = "<span style='color:" . esc_attr( $colors[$cmd] ) . "'>" . esc_html( $cmd ) . "</span>";
 
-		return $cmd2 . substr( $line, strlen( $cmd ) ) . "\n";
+		return $cmd2 . esc_html( substr( $line, strlen( $cmd ) ) ) . "\n";
 	}
 
 	function stats() {
 		echo "<p>\n";
 		foreach ( $this->stats as $stat => $n ) {
-			echo "<strong>$stat</strong> $n";
+			echo "<strong>" . esc_html( $stat ) . "</strong> " . esc_html( $n );
 			echo "<br/>\n";
 		}
 		echo "</p>\n";
@@ -403,9 +403,9 @@ class WP_Object_Cache {
 		foreach ( $this->group_ops as $group => $ops ) {
 			if ( !isset( $_GET['debug_queries'] ) && 500 < count( $ops ) ) {
 				$ops = array_slice( $ops, 0, 500 );
-				echo "<big>Too many to show! <a href='" . add_query_arg( 'debug_queries', 'true' ) . "'>Show them anyway</a>.</big>\n";
+				echo "<big>Too many to show! <a href='" . esc_url( add_query_arg( 'debug_queries', 'true' ) ) . "'>Show them anyway</a>.</big>\n";
 			}
-			echo "<h4>$group commands</h4>";
+			echo "<h4>" . esc_html( $group ) . " commands</h4>";
 			echo "<pre>\n";
 			$lines = array();
 			foreach ( $ops as $op ) {
@@ -435,13 +435,13 @@ class WP_Object_Cache {
 			'delete'     => 0,
 			'miss'       => 0,
 		);
-		
+
 		global $memcached_servers;
 
 		if ( isset( $memcached_servers ) )
 			$buckets = $memcached_servers;
 		else
-			$buckets = array( '127.0.0.1' );
+			$buckets = array( '127.0.0.1:11211' );
 
 		reset( $buckets );
 		if ( is_int( key( $buckets ) ) )
