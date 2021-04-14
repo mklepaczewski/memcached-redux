@@ -150,7 +150,7 @@ class WP_Object_Cache {
 		$result = $mc->add( $key, $data, $expire );
 
 		if ( false !== $result ) {
-			++$this->stats['add'];
+            $this->stats['add'] = isset($this->stats['add']) ? $this->stats['add']++ : 1;
 			$this->group_ops[$group][] = "add $id";
 			$this->cache[$key] = $data;
 		}
@@ -205,7 +205,7 @@ class WP_Object_Cache {
 		$result = $mc->delete( $key );
 
 		if ( false !== $result ) {
-			++$this->stats['delete'];
+            $this->stats['delete'] = isset($this->stats['delete']) ? $this->stats['delete']++ : 1;
             $this->group_ops[$group][] = "delete $id";
 		}
 
@@ -252,10 +252,10 @@ class WP_Object_Cache {
 		}
 
 		if ( $found ) {
-			++$this->stats['get'];
+			$this->stats['get'] = isset($this->stats['get']) ? $this->stats['get']++ : 1;
 			$this->group_ops[$group][] = "get $id";
 		} else {
-			++$this->stats['miss'];
+            $this->stats['miss'] = isset($this->stats['miss']) ? $this->stats['miss']++ : 1;
 		}
 
 		if ( 'checkthedatabaseplease' === $value ) {
@@ -299,7 +299,7 @@ class WP_Object_Cache {
 			$return = array_merge( $return, $joined );
 		}
 
-		++$this->stats['get_multi'];
+        $this->stats['get_multi'] = isset($this->stats['get_multi']) ? $this->stats['get_multi']++ : 1;
 		$this->group_ops[$group][] = "get_multi $id";
 		$this->cache = array_merge( $this->cache, $return );
 		return array_values( $return );
